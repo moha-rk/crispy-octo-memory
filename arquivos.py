@@ -165,7 +165,7 @@ def le_comentarios_arquivo() -> list:
     
     return lista_comentarios
 
-def adiciona_comentario(aluno: str, comentario: str, valor_desconto: int) -> list:
+def adiciona_comentario(aluno: str, comentario: str, valor_desconto: float) -> list:
     global lista_comentarios
 
     for coment in lista_comentarios:
@@ -216,6 +216,9 @@ def devolve_comentario_por_indice(index: int) -> str:
 
 def devolve_desconto_por_indice(index: int) -> int:
     #return lista_comentarios[index+1][1]
+    #return lista_comentarios[index][1]
+    if lista_comentarios[index][1] == None:
+        return 0
     return lista_comentarios[index][1]
 
 #def remove_comentario(index: int, coment: str) -> None:
