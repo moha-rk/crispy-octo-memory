@@ -1,7 +1,6 @@
 #Arquivo com funções relacionadas à abertura, leitura e manipulação de arquivos
 
-from os import listdir
-from typing import List
+from os import mkdir, listdir
 
 def conteudo_dirertorio(path: str) -> list:
     """Recebe um caminho e devolve a lista de nomes de arquivos e pastas dentro desse caminho"""
@@ -20,13 +19,14 @@ def nomes_alunos_edisciplinas(path: str) -> list:
         while (name[i] != '_'):
             i += 1
         names.append(name[0:i])
+    names.sort()
     return names
 
 nome_do_trabalho = ''
 lista_alunos = []
 lista_comentarios = []
 
-def set_nome_trabalho(nome: str) -> int:
+def set_nome_novo_trabalho(nome: str) -> int:
     """Seta o nome do trabalho. Devolve 1 em caso de suesso, 
     0 em caso de falha (nome já existente, nome não permitido)"""
 
@@ -41,6 +41,21 @@ def set_nome_trabalho(nome: str) -> int:
 
     return 1
 
+def set_nome_trabalho_antigo(nome: str) -> int:
+    """Seta o nome do trabalho. Devolve 1 em caso de suesso, 
+    0 em caso de falha (nome não existente)"""
+
+    if not (nome in conteudo_dirertorio(".")):
+        return 0
+
+    global nome_do_trabalho
+    nome_do_trabalho = nome
+
+    return 1    
+
+def cria_pasta() -> None:
+    mkdir(nome_pasta())
+
 def get_nome_trabalho() -> str:
     return nome_do_trabalho
 
@@ -53,7 +68,7 @@ def nome_arquivo_chamada() -> str:
 def nome_arquivo_coments() -> str:
     return f'{nome_pasta()}/comentarios.txt'
 
-def gera_lista_alunos(path_trabalhos: str, novo_trabalho: int) -> None:
+def gera_lista_alunos(path_trabalhos: str, novo_trabalho: int) -> list:
     """Essa função deve ser chamada na criação de um novo trabalho (1) 
     passando na chamada o caminho da pasta contendo as pastas com nomes dos alunos
     ou na abertura de um trabalho (0), passando vazio em path_trabalhos (será ignorado)
@@ -67,6 +82,8 @@ def gera_lista_alunos(path_trabalhos: str, novo_trabalho: int) -> None:
 
     else:
         lista_alunos = le_lista_alunos_arquivo()
+
+    return lista_alunos
 
 
 def gera_arquivo_nomes_alunos(nome_alunos) -> None:
@@ -83,11 +100,18 @@ def le_lista_alunos_arquivo() -> None:
     lista_alunos = []
     with open(nome_arquivo_chamada(), 'r') as f:
         for line in f:
-            line_split = line.split()
-            if len(line_split) >= 1:
-                entry = [line_split[0], []]
-                for i in range (1, len(line_split)):
-                    entry[1].append(int(line_split[i]))
+            line = line.strip('\n')
+            i = 0
+            while i < len(line) and not line[i].isnumeric():
+                i += 1
+            if i == len(line):
+                entry = [line, []]
+                lista_alunos.append(entry)
+            else:
+                numeros = line[i:].split()
+                for n in range(len(numeros)):
+                    numeros[n] = int(numeros[n])
+                entry = [line[:i-1], numeros]
                 lista_alunos.append(entry)
     return lista_alunos
 
@@ -141,7 +165,7 @@ def le_comentarios_arquivo() -> list:
     
     return lista_comentarios
 
-def adiciona_comentario(comentario: str, desconto: int) -> list:
+def adiciona_comentario(aluno: str, comentario: str, valor_desconto: int) -> list:
     global lista_comentarios
 
     for coment in lista_comentarios:
@@ -149,9 +173,10 @@ def adiciona_comentario(comentario: str, desconto: int) -> list:
             print("Comentário já existente")
             return
     
-    if desconto == 0:
-        desconto = None
-    lista_comentarios.append([comentario, desconto])
+    if valor_desconto == 0:
+        valor_desconto = None
+    lista_comentarios.append([comentario, valor_desconto])
+    adiciona_desconto(aluno, len(lista_comentarios)-1)
     atualiza_arquivo_comentario()
 
 
@@ -180,3 +205,17 @@ def atualiza_arquivo_comentario() -> None:
             else:
                 entry = f'{lista_comentarios[i][0]}\n'
             f.write(entry)
+
+def devolve_comentario_e_desconto_por_indice(index: int) -> list:
+    #return lista_comentarios[index+1]
+    return lista_comentarios[index]
+
+def devolve_comentario_por_indice(index: int) -> str:
+    #return lista_comentarios[index+1][0]
+    return lista_comentarios[index][0]
+
+def devolve_desconto_por_indice(index: int) -> int:
+    #return lista_comentarios[index+1][1]
+    return lista_comentarios[index][1]
+
+#def remove_comentario(index: int, coment: str) -> None:
