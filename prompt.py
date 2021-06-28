@@ -1,4 +1,3 @@
-from os import stat
 from arquivos import *
 
 def main():
@@ -45,8 +44,8 @@ def main():
                     state = 0
                 else:
                     print("\nComando inválido")
-    except:
-        pass
+    except KeyboardInterrupt:
+        print()
 
 
 
@@ -113,9 +112,14 @@ def avalia_aluno(lista_comentarios: list, aluno: list, individual: int) -> int:
             coment = int(input("\nDigite o índice do comentário: "))
             adiciona_desconto(aluno[0], coment)
         elif com == 3:
-            #Remove comentário
-            print("Precisa fazer a função ainda")
-            pass
+            print("\nComentários:")
+            i = 0
+            for i_c in aluno[1]:
+                l_com = devolve_comentario_e_desconto_por_indice(i_c)
+                print(f"({i}) {l_com[0]} ({l_com[1]})")
+                i += 1
+            coment = int(input("\nDigite o índice do comentário: "))
+            remove_desconto(aluno[0], coment)
         elif com == 4 and not individual:
             continuar = True
             state_interno = 1

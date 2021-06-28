@@ -115,14 +115,14 @@ def le_lista_alunos_arquivo() -> None:
                 lista_alunos.append(entry)
     return lista_alunos
 
-def adiciona_desconto(aluno: str, desconto: int) -> None:
+def adiciona_desconto(aluno: str, indice_desconto: int) -> None:
     """Essa função recebe o nome do aluno a levar o desconto, e também recebe o número
        do desconto, alterando em memória e no arquivo. Trata adição de desconto repetido"""
     global lista_alunos
     for i in range (len(lista_alunos)):
         if lista_alunos[i][0] == aluno:
-            if not (desconto in lista_alunos[i][1]):
-                lista_alunos[i][1].append(desconto)
+            if not (indice_desconto in lista_alunos[i][1]):
+                lista_alunos[i][1].append(indice_desconto)
                 lista_alunos[i][1].sort()
                 #Atualizar a cada desconto feito.
                 #Ineficiente, mas mais fácil para protótipo inicial
@@ -156,7 +156,7 @@ def le_comentarios_arquivo() -> list:
                     size_desconto = 1
                     while size_desconto < len(line) and line[-size_desconto] != '(':
                         size_desconto += 1
-                    desconto = int(line[len(line)-size_desconto+1: -1])
+                    desconto = float(line[len(line)-size_desconto+1: -1])
                     entry = [line[:-size_desconto-1], desconto]
                 lista_comentarios.append(entry)
 
@@ -180,7 +180,7 @@ def adiciona_comentario(aluno: str, comentario: str, valor_desconto: float) -> l
     atualiza_arquivo_comentario()
 
 
-def atualiza_desconto_comentario(comentario: str, desconto: int) -> list:
+def atualiza_desconto_comentario(comentario: str, desconto: float) -> list:
     """Recebe um comentario e o novo desconto atrelado a este comentario,
        atualiza a lista global e a devolve"""
     global lista_comentarios
@@ -214,11 +214,16 @@ def devolve_comentario_por_indice(index: int) -> str:
     #return lista_comentarios[index+1][0]
     return lista_comentarios[index][0]
 
-def devolve_desconto_por_indice(index: int) -> int:
+def devolve_desconto_por_indice(index: int) -> float:
     #return lista_comentarios[index+1][1]
     #return lista_comentarios[index][1]
     if lista_comentarios[index][1] == None:
         return 0
     return lista_comentarios[index][1]
 
-#def remove_comentario(index: int, coment: str) -> None:
+def remove_desconto(aluno: str, indice_coment: int) -> None:
+    for i in range(len(lista_alunos)):
+        if lista_alunos[i][0] == aluno:
+            lista_alunos[i][1].remove(indice_coment)
+            atualiza_arquivo_chamada(lista_alunos)
+            return
