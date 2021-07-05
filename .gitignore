@@ -1,2 +1,3 @@
 teste.py
-ideias.txt
+*.txt
+arquivos.cpython-38.pyc
