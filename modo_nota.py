@@ -1,5 +1,6 @@
 from funcoes_impressao import *
 from arquivos import *
+import pyperclip as pc
 
 def modo_nota(lista_alunos):
     nota_maxima = 10
@@ -32,8 +33,13 @@ def modo_nota(lista_alunos):
 
 def mostra_notas_ordem_alfabetica(lista_alunos, nota_maxima):
 
+    try:
+        copia_transferencia = int(input("Você gostaria de copias as notas e comentários para a área de tranferência? (1)Sim ou (0)Não"))
+    except ValueError:
+        copia_transferencia = 1
+
     for aluno in lista_alunos:
-        nota_aluno(aluno, nota_maxima)
+        nota_aluno(aluno, nota_maxima, copia_transferencia)
         com = input("\nPara continuar, dê um Enter. Para sair, digite 0: ")
         if com == '0':
             return
@@ -48,14 +54,32 @@ def mostra_nota_individual(lista_alunos, nota_maxima):
         except ValueError:
             i_aluno = -1
 
+    try:
+        copia_transferencia = int(input("Você gostaria de copias a nota e comentários para a área de tranferência? (1)Sim ou (0)Não"))
+    except ValueError:
+        copia_transferencia = 1
+
     aluno = lista_alunos[i_aluno]
-    nota_aluno(aluno, nota_maxima)
+    nota_aluno(aluno, nota_maxima, copia_transferencia)
 
 
-def nota_aluno(aluno: list, nota_maxima: int) -> None:
+def nota_aluno(aluno: list, nota_maxima: int, copiar: int) -> None:
     nota_final = 10
     for desconto_indice in aluno[1]:
         nota_final += devolve_desconto_por_indice(desconto_indice)
-    print(f"\nAluno: {aluno[0]}\nNota: {nota_final}\nComentários:")
+    print(f"\nAluno: {aluno[0]}\nNota: {nota_final}")
+
+    if copiar:
+        pc.copy(f"{nota_final}")
+        input()
+
+    print(f"Comentários:")
+
+    comentarios = ""
+    
     for desconto_indice in aluno[1]:
-        print(f"{devolve_comentario_por_indice(desconto_indice)} ({devolve_desconto_por_indice(desconto_indice)})")
+        comentarios += f"{devolve_comentario_por_indice(desconto_indice)} ({devolve_desconto_por_indice(desconto_indice)})\n"
+    
+    print(comentarios)
+    if copiar:
+        pc.copy(comentarios)
