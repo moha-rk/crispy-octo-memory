@@ -21,11 +21,11 @@ def modo_correcao(lista_alunos, lista_comentarios):
                 print("\nComando inválido")
 
         elif state == 1:
-            avalia_ordem_alfabetica()
+            avalia_ordem_alfabetica(lista_alunos, lista_comentarios)
             state = 0
 
         elif state == 2:
-            avalia_individual()
+            avalia_individual(lista_alunos, lista_comentarios)
             state = 0
 
 def avalia_aluno(lista_comentarios: list, aluno: list, individual: int) -> int:

@@ -28,7 +28,7 @@ def main():
                 else:
                     print("\nComando inválido")
             elif state == 1:
-                print(f"\nTrabalho {nome_trabalho} acessado! Você deseja:\n(1) Entrar no modo de Correção\n(2) Entrar no modo de Nota\n(3) Sair para a tela inicial")
+                print(f"\nTrabalho {nome_trabalho} acessado! Você deseja:\n(1) Entrar no modo de Correção\n(2) Entrar no modo de Nota\n(3) Editar trabalho (exercícios, tópicos)\n(4) Sair para a tela inicial")
                 try:
                     com = int(input(prompt))
                 except ValueError:
@@ -36,8 +36,10 @@ def main():
                 if com == 1:
                     modo_correcao(lista_alunos, lista_comentarios)
                 elif com == 2:
-                    modo_nota(lista_alunos, lista_comentarios)
+                    modo_nota(lista_alunos)
                 elif com == 3:
+                    pass
+                elif com == 4:
                     state = 0
                 else:
                     print("\nComando inválido")
