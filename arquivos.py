@@ -119,6 +119,8 @@ def adiciona_desconto(aluno: str, indice_desconto: int) -> None:
     """Essa função recebe o nome do aluno a levar o desconto, e também recebe o número
        do desconto, alterando em memória e no arquivo. Trata adição de desconto repetido"""
     global lista_alunos
+    if indice_desconto >= len(lista_comentarios) or indice_desconto < 0:
+        return
     for i in range (len(lista_alunos)):
         if lista_alunos[i][0] == aluno:
             if not (indice_desconto in lista_alunos[i][1]):
@@ -224,6 +226,8 @@ def devolve_desconto_por_indice(index: int) -> float:
 def remove_desconto(aluno: str, indice_coment: int) -> None:
     for i in range(len(lista_alunos)):
         if lista_alunos[i][0] == aluno:
+            if not indice_coment in lista_alunos[i][1]:
+                return
             lista_alunos[i][1].remove(indice_coment)
             atualiza_arquivo_chamada(lista_alunos)
             return
