@@ -209,16 +209,12 @@ def atualiza_arquivo_comentario() -> None:
             f.write(entry)
 
 def devolve_comentario_e_desconto_por_indice(index: int) -> list:
-    #return lista_comentarios[index+1]
     return lista_comentarios[index]
 
 def devolve_comentario_por_indice(index: int) -> str:
-    #return lista_comentarios[index+1][0]
     return lista_comentarios[index][0]
 
 def devolve_desconto_por_indice(index: int) -> float:
-    #return lista_comentarios[index+1][1]
-    #return lista_comentarios[index][1]
     if lista_comentarios[index][1] == None:
         return 0
     return lista_comentarios[index][1]
