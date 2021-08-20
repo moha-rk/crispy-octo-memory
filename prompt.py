@@ -38,8 +38,9 @@ def main():
                 elif com == 2:
                     modo_nota(lista_alunos)
                 elif com == 3:
-                    pass
+                    edita_trabalho(nome_trabalho)
                 elif com == 4:
+                    fecha_trabalho()
                     state = 0
                 else:
                     print("\nComando inválido")
@@ -72,6 +73,39 @@ def acessa_trabalho():
     state = 1
 
     return nome_trabalho, lista_alunos, lista_comentarios, state
+
+
+def edita_trabalho(nome_trabalho):
+
+    state = 0
+    while True:
+        if state == 0:
+            print(f"Edição do trabalho {nome_trabalho}. Você deseja:\n(1) Alterar a nota máxima\n(2) Adicionar tópicos/exercícios\n(3) É um trabalho em grupo?\n(4) Retornar a tela anterior")
+            try:
+                com = int(input(prompt))
+            except ValueError:
+                com = ''
+            
+            if com == 1:
+                pass
+            elif com == 2:
+                pass
+            elif com == 3:
+                com_interno = -1
+                while com != 1 and com != 0:
+                    print("\n(1)Sim\n(0)Não")
+                    try:
+                        com = int(input(prompt))
+                    except ValueError:
+                        com = -1
+
+                set_trabalho_em_grupo(com)
+                
+            elif com == 4:
+                return
+            else:
+                print("\nComando inválido")
+    
 
 
 main()

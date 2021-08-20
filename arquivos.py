@@ -26,6 +26,15 @@ nome_do_trabalho = ''
 lista_alunos = []
 lista_comentarios = []
 
+def fecha_trabalho():
+    global nome_do_trabalho
+    global lista_alunos
+    global lista_comentarios
+
+    nome_do_trabalho = ''
+    lista_alunos = []
+    lista_comentarios = []
+
 def set_nome_novo_trabalho(nome: str) -> int:
     """Seta o nome do trabalho. Devolve 1 em caso de suesso, 
     0 em caso de falha (nome já existente, nome não permitido)"""
@@ -227,3 +236,27 @@ def remove_desconto(aluno: str, indice_coment: int) -> None:
             lista_alunos[i][1].remove(indice_coment)
             atualiza_arquivo_chamada(lista_alunos)
             return
+
+em_grupo = 0
+
+def set_trabalho_em_grupo(set: int):
+    global em_grupo
+    if set == 0 or set == 1:
+        em_grupo = set
+
+def get_trabalho_em_grupo():
+    return em_grupo
+
+def nome_aluno(aluno):
+    return aluno[0]
+
+def adiciona_integrante(grupo: str, integrante: str):
+    global lista_alunos
+    for i in range (len(lista_alunos)):
+        if nome_aluno(lista_alunos[i]) == grupo:
+            lista_alunos[i][0] += f", {integrante}"
+            atualiza_arquivo_chamada(lista_alunos)
+            break
+    
+    return lista_alunos
+            
